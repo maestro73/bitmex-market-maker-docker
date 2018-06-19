@@ -1,4 +1,4 @@
-import os
+import os, socket, hashlib
 from os.path import join
 import logging
 
@@ -106,7 +106,7 @@ LOG_LEVEL = logging.INFO
 # If you are running multiple bots on the same symbol, give them unique ORDERID_PREFIXes - otherwise they will
 # cancel each others' orders.
 # Max length is 13 characters.
-ORDERID_PREFIX = "mm_bitmex_"
+ORDERID_PREFIX = 'mm_' + hashlib.sha256(socket.gethostname().encode()).hexdigest()[:9] + '_'
 
 # If any of these files (and this file) changes, reload the bot.
 WATCHED_FILES = [join('market_maker', 'market_maker.py'), join('market_maker', 'bitmex.py'), 'settings.py']
