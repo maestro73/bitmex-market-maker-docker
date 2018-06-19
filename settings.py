@@ -33,8 +33,8 @@ ORDER_PAIRS = 3
 # ORDER_START_SIZE will be the number of contracts submitted on level 1
 # Number of contracts from level 1 to ORDER_PAIRS - 1 will follow the function
 # [ORDER_START_SIZE + ORDER_STEP_SIZE (Level -1)]
-ORDER_START_SIZE = 1000
-ORDER_STEP_SIZE = 100
+ORDER_START_SIZE = int(os.environ['ORDER_START_SIZE'])
+ORDER_STEP_SIZE = int(os.environ['ORDER_STEP_SIZE'])
 
 # Distance between successive orders, as a percentage (example: 0.005 for 0.5%)
 INTERVAL = 0.005
@@ -106,7 +106,7 @@ LOG_LEVEL = logging.INFO
 # If you are running multiple bots on the same symbol, give them unique ORDERID_PREFIXes - otherwise they will
 # cancel each others' orders.
 # Max length is 13 characters.
-ORDERID_PREFIX = 'mm_' + hashlib.sha256(socket.gethostname().encode()).hexdigest()[:9] + '_'
+ORDERID_PREFIX = os.environ['ORDERID_PREFIX'] + '_mm_'
 
 # If any of these files (and this file) changes, reload the bot.
 WATCHED_FILES = [join('market_maker', 'market_maker.py'), join('market_maker', 'bitmex.py'), 'settings.py']
