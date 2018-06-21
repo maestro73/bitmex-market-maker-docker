@@ -5,3 +5,7 @@ services:
     build: .
     env_file:
       - secrets.sh
+    volumes:
+      - .:/app
+    entrypoint: /app/docker/start
+

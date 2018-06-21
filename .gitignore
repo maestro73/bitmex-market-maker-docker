@@ -1,2 +1,4 @@
 secrets*
 .k8s
+market_maker
+settings.bak.py

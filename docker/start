@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -ex
+
+pip install --no-cache-dir -r requirements.txt
+
+cp settings.py settings.bak.py
+marketmaker setup
+
+exec marketmaker

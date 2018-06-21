@@ -7,12 +7,12 @@ import logging
 ########################################################################################################################
 
 # API URL.
-BASE_URL = "https://testnet.bitmex.com/api/v1/"
+BASE_URL = os.getenv('BASE_URL', "https://testnet.bitmex.com/api/v1/")
 # BASE_URL = "https://www.bitmex.com/api/v1/" # Once you're ready, uncomment this.
 
 # The BitMEX API requires permanent API keys. Go to https://testnet.bitmex.com/api/apiKeys to fill these out.
-API_KEY = os.environ['API_KEY']
-API_SECRET = os.environ['API_SECRET']
+API_KEY = os.getenv('API_KEY')
+API_SECRET = os.getenv('API_SECRET')
 
 
 ########################################################################################################################
@@ -20,7 +20,7 @@ API_SECRET = os.environ['API_SECRET']
 ########################################################################################################################
 
 # Instrument to market make on BitMEX.
-SYMBOL = "XBTUSD"
+SYMBOL = os.getenv('SYMBOL', "XBTUSD")
 
 
 ########################################################################################################################
@@ -28,23 +28,23 @@ SYMBOL = "XBTUSD"
 ########################################################################################################################
 
 # How many pairs of buy/sell orders to keep open
-ORDER_PAIRS = 3
+ORDER_PAIRS = int(os.getenv('ORDER_PAIRS', 5))
 
 # ORDER_START_SIZE will be the number of contracts submitted on level 1
 # Number of contracts from level 1 to ORDER_PAIRS - 1 will follow the function
 # [ORDER_START_SIZE + ORDER_STEP_SIZE (Level -1)]
-ORDER_START_SIZE = int(os.environ['ORDER_START_SIZE'])
-ORDER_STEP_SIZE = int(os.environ['ORDER_STEP_SIZE'])
+ORDER_START_SIZE = int(os.getenv('ORDER_START_SIZE', 101))
+ORDER_STEP_SIZE = int(os.getenv('ORDER_STEP_SIZE', 1))
 
 # Distance between successive orders, as a percentage (example: 0.005 for 0.5%)
-INTERVAL = 0.005
+INTERVAL= float(os.getenv('INTERVAL', 0.0007))
 
 # Minimum spread to maintain, in percent, between asks & bids
-MIN_SPREAD = 0.001
+MIN_SPREAD= float(os.getenv('MIN_SPREAD', 0.0005))
 
 # If True, market-maker will place orders just inside the existing spread and work the interval % outwards,
 # rather than starting in the middle and killing potentially profitable spreads.
-MAINTAIN_SPREADS = True
+MAINTAIN_SPREADS = os.getenv('MAINTAIN_SPREADS', "True") in ["True", "T", "true"]
 
 # This number defines far much the price of an existing order can be from a desired order before it is amended.
 # This is useful for avoiding unnecessary calls and maintaining your ratelimits.
@@ -56,7 +56,7 @@ MAINTAIN_SPREADS = True
 # it will be resubmitted.
 #
 # 0.01 == 1%
-RELIST_INTERVAL = 0.01
+RELIST_INTERVAL= float(os.getenv('RELIST_INTERVAL', 0.01))
 
 
 ########################################################################################################################
@@ -65,15 +65,15 @@ RELIST_INTERVAL = 0.01
 
 # Position limits - set to True to activate. Values are in contracts.
 # If you exceed a position limit, the bot will log and stop quoting that side.
-CHECK_POSITION_LIMITS = True
-MIN_POSITION = int(os.environ['MIN_POSITION'])
-MAX_POSITION = int(os.environ['MAX_POSITION'])
+CHECK_POSITION_LIMITS = os.getenv('CHECK_POSITION_LIMITS', "True") in ["True", "T", "true"]
+MIN_POSITION = int(os.getenv('MIN_POSITION', -10000))
+MAX_POSITION = int(os.getenv('MAX_POSITION',  10000))
 
 # If True, will only send orders that rest in the book (ExecInst: ParticipateDoNotInitiate).
 # Use to guarantee a maker rebate.
 # However -- orders that would have matched immediately will instead cancel, and you may end up with
 # unexpected delta. Be careful.
-POST_ONLY = False
+POST_ONLY = os.getenv('POST_ONLY', "False") in ["True", "T", "true"]
 
 ########################################################################################################################
 # Misc Behavior, Technicals
@@ -81,20 +81,20 @@ POST_ONLY = False
 
 # If true, don't set up any orders, just say what we would do
 # DRY_RUN = True
-DRY_RUN = False
+DRY_RUN = os.getenv('DRY_RUN', "False") in ["True", "T", "true"]
 
 # How often to re-check and replace orders.
 # Generally, it's safe to make this short because we're fetching from websockets. But if too many
 # order amend/replaces are done, you may hit a ratelimit. If so, email BitMEX if you feel you need a higher limit.
-LOOP_INTERVAL = 5
+LOOP_INTERVAL = int(os.getenv('LOOP_INTERVAL', 5))
 
 # Wait times between orders / errors
-API_REST_INTERVAL = 1
-API_ERROR_INTERVAL = 10
-TIMEOUT = 7
+API_REST_INTERVAL = int(os.getenv('API_REST_INTERVAL', 1))
+API_ERROR_INTERVAL = int(os.getenv('API_ERROR_INTERVAL', 10))
+TIMEOUT = int(os.getenv('TIMEOUT', 7))
 
 # If we're doing a dry run, use these numbers for BTC balances
-DRY_BTC = 50
+DRY_BTC = int(os.getenv('DRY_BTC', 50))
 
 # Available levels: logging.(DEBUG|INFO|WARN|ERROR)
 LOG_LEVEL = logging.INFO
@@ -106,7 +106,7 @@ LOG_LEVEL = logging.INFO
 # If you are running multiple bots on the same symbol, give them unique ORDERID_PREFIXes - otherwise they will
 # cancel each others' orders.
 # Max length is 13 characters.
-ORDERID_PREFIX = os.environ['ORDERID_PREFIX'] + '_mm_'
+ORDERID_PREFIX = os.getenv('ORDERID_PREFIX', "bitmex") + '_mm_'
 
 # If any of these files (and this file) changes, reload the bot.
 WATCHED_FILES = [join('market_maker', 'market_maker.py'), join('market_maker', 'bitmex.py'), 'settings.py']
