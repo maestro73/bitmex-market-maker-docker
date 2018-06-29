@@ -5,3 +5,4 @@ market_maker
 *.bak*
 
 !**/*sample*
+.idea/

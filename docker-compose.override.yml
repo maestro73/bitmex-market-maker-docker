@@ -1,0 +1,8 @@
+version: '2'
+
+services:
+  bitmex:
+    volumes:
+    - ./config:/app/config
+
+

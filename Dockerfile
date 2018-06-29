@@ -4,9 +4,11 @@ WORKDIR /app
 
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt &&\
-	  marketmaker setup
+marketmaker setup
 
-COPY settings-append.py ./
-RUN cat settings-append.py >> settings.py && cat settings.py
+COPY config/settings-append.py ./config/
+RUN cat config/settings-append.py >> settings.py &&\
+tail settings.py
 
-CMD [ "marketmaker" ]
+COPY custom_strategy.py ./
+CMD [ "python", "custom_strategy.py" ]

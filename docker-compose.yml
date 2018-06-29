@@ -3,6 +3,6 @@ version: '2'
 services:
   bitmex:
     build: .
-    volumes:
-    - ./config:/app/config
+    command: python custom_strategy.py
+
 
