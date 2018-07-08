@@ -1,8 +1,6 @@
 **/*secrets*
 **/*settings*
-.k8s
+.*
 market_maker
-*.bak*
 
 !**/*sample*
-.idea/
