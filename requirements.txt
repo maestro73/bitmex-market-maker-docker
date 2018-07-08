@@ -1,1 +1,1 @@
-bitmex-market-maker
+git+https://github.com/trading-bot/bitmex-market-maker.git@fix-ws-infinite-loop
