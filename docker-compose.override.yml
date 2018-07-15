@@ -4,5 +4,7 @@ services:
   bitmex:
     volumes:
     - ./config:/app/config
+    environment:
+    - WATCH_CUSTOM_SETTINGS=True
 
 
